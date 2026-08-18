@@ -123,7 +123,7 @@
                             href="{{ article.url }}"
                             class="btn {{ button_style }} {{ section.settings.button_size }} {{ section.settings.button_type }}"
                           >
-                            <span>{{ button_text }}</span>
+                            <span>{{ button_text }} <span class="visually-hidden"> - {{ article.title | default: default_title }}</span></span>
 
                             {%- if section.settings.show_arrow -%}
                               {%- render 'icon-nav-arrow-right' -%}

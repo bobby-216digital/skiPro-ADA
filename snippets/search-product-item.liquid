@@ -92,7 +92,7 @@
                       {%- liquid
                         case media.media_type
                           when 'video'
-                            echo media | media_tag: image_size: '1024x1024', class: 'media-video', autoplay: true, loop: true, controls: false, preload: 'none', muted: true
+                            echo media | media_tag: image_size: '1024x1024', class: 'media-video', autoplay: true, loop: true, controls: false, preload: 'none', muted: true | replace: 'aria-label="Video Player"', ''
                           when 'external_video'
                             if media.host == 'youtube'
                               echo media | external_video_url: autoplay: true, playsinline: true, loop: true, playlist: media.external_id, controls: false, mute: true, showinfo: false | external_video_tag: loading: 'lazy', data-host: media.host

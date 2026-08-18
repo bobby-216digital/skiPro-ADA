@@ -341,8 +341,8 @@
 
                         {%- if button_text != blank -%}
                           <div class="column__btn">
-                            <a href="{{ block.settings.button_url | default: '#!' }}" class="btn {{ button_style }} {{ block.settings.button_size }} {{ block.settings.button_type }}" aria-label="{{ button_text }}">
-                              <span>{{ button_text }}</span>
+                            <a href="{{ block.settings.button_url | default: '#!' }}" class="btn {{ button_style }} {{ block.settings.button_size }} {{ block.settings.button_type }}">
+                              <span>{{ button_text }} <span class="visually-hidden"> - {{ title | escape }}</span></span>
 
                               {%- if block.settings.show_arrow -%}
                                 {%- render 'icon-nav-arrow-right' -%}
@@ -460,8 +460,8 @@
 
                       {%- if button_text != blank -%}
                         <div class="column__btn">
-                          <a href="{{ block.settings.button_url | default: '#!' }}" class="btn {{ button_style }} {{ block.settings.button_size }} {{ block.settings.button_type }}" aria-label="{{ button_text }}">
-                            <span>{{ button_text }}</span>
+                          <a href="{{ block.settings.button_url | default: '#!' }}" class="btn {{ button_style }} {{ block.settings.button_size }} {{ block.settings.button_type }}">
+                            <span>{{ button_text }} <span class="visually-hidden"> - {{ title | escape }}</span></span>
 
                             {%- if block.settings.show_arrow -%}
                               {%- render 'icon-nav-arrow-right' -%}

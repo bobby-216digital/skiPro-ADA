@@ -104,7 +104,7 @@
               data-aos-order="{{ animation_order }}"
             >
               <a href="{{ block.settings.button_url | default: '#!' }}" class="btn {{ button_style }} {{ block.settings.button_size }} {{ block.settings.button_type }}">
-                <span>{{ block.settings.button_text }}</span>
+                <span>{{ block.settings.button_text }} {% if block.settings.accessible_button_text != blank %}<span class="visually-hidden">{{ block.settings.accessible_button_text | escape }}</span>{% endif %}</span>
 
                 {%- if block.settings.show_arrow -%}
                   {%- render 'icon-nav-arrow-right' -%}
@@ -469,6 +469,12 @@
           "id": "button_text",
           "label": "Text",
           "default": "Learn more"
+        },
+        {
+          "type": "text",
+          "id": "accessible_button_text",
+          "label": "Accessibility Button Text",
+          "default": "Add Accessibility Information"
         },
         {
           "type": "url",
