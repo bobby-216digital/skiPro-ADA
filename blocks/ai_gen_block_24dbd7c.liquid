@@ -1,0 +1,503 @@
+{% doc %}
+  @prompt
+    Create a two-column section with an image on one side and 4 product cards with a collection button on the other side. Add a setting to toggle the image between left or right. The image should become sticky as you scroll. Include settings to select which products to display and add a collection link. Make it responsive for mobile.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-product-showcase-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    padding: 40px 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .ai-product-showcase-{{ ai_gen_id }}--reverse {
+    direction: rtl;
+  }
+
+  .ai-product-showcase-{{ ai_gen_id }}--reverse > * {
+    direction: ltr;
+  }
+
+  .ai-product-showcase-image-{{ ai_gen_id }} {
+    position: sticky;
+    top: 100px;
+    height: fit-content;
+  }
+
+  .ai-product-showcase-image-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .ai-product-showcase-image-wrapper-{{ ai_gen_id }} img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .ai-product-showcase-image-placeholder-{{ ai_gen_id }} {
+    background-color: #f4f4f4;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border-radius: 8px;
+  }
+
+  .ai-product-showcase-image-placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ai-product-showcase-empty-state-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 20px;
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .ai-product-showcase-content-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .ai-product-showcase-products-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .ai-product-card-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .ai-product-card-image-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 4px;
+    background-color: #f4f4f4;
+  }
+
+  .ai-product-card-image-{{ ai_gen_id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .ai-product-card-{{ ai_gen_id }}:hover .ai-product-card-image-{{ ai_gen_id }} img {
+    transform: scale(1.05);
+  }
+
+  .ai-product-card-image-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f4f4f4;
+  }
+
+  .ai-product-card-image-placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ai-product-card-info-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .ai-product-card-title-{{ ai_gen_id }} {
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .ai-product-card-price-{{ ai_gen_id }} {
+    font-size: 14px;
+    color: #666;
+  }
+
+  .ai-product-card-price-{{ ai_gen_id }} .ai-product-card-compare-price-{{ ai_gen_id }} {
+    text-decoration: line-through;
+    margin-right: 8px;
+    opacity: 0.7;
+  }
+
+  .ai-product-card-price-{{ ai_gen_id }} .ai-product-card-sale-price-{{ ai_gen_id }} {
+    color: #800000;
+    font-weight: 600;
+  }
+
+  .ai-product-showcase-button-wrapper-{{ ai_gen_id }} {
+    margin-top: 8px;
+  }
+
+  .ai-product-showcase-button-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    background-color: {{ block.settings.button_bg_color }};
+    color: {{ block.settings.button_text_color }};
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+  }
+
+  .ai-product-showcase-button-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_bg_color }};
+  }
+
+  .ai-product-showcase-empty-products-{{ ai_gen_id }} {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px 20px;
+    color: #999;
+    font-style: italic;
+  }
+
+  @media screen and (max-width: 989px) {
+    .ai-product-showcase-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    .ai-product-showcase-{{ ai_gen_id }}--reverse {
+      direction: ltr;
+    }
+
+    .ai-product-showcase-image-{{ ai_gen_id }} {
+      position: relative;
+      top: 0;
+    }
+
+    .ai-product-showcase-products-{{ ai_gen_id }} {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media screen and (max-width: 589px) {
+    .ai-product-showcase-{{ ai_gen_id }} {
+      padding: 24px 16px;
+      gap: 24px;
+    }
+
+    .ai-product-showcase-products-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .ai-product-card-title-{{ ai_gen_id }} {
+      font-size: 13px;
+    }
+
+    .ai-product-card-price-{{ ai_gen_id }} {
+      font-size: 13px;
+    }
+  }
+{% endstyle %}
+
+<div
+  class="ai-product-showcase-{{ ai_gen_id }} {% if block.settings.image_position == 'right' %}ai-product-showcase-{{ ai_gen_id }}--reverse{% endif %}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-product-showcase-image-{{ ai_gen_id }}">
+    <div class="ai-product-showcase-image-wrapper-{{ ai_gen_id }}">
+      {% if block.settings.image %}
+        <img
+          src="{{ block.settings.image | image_url: width: 800 }}"
+          alt="{{ block.settings.image.alt | escape }}"
+          loading="lazy"
+          width="{{ block.settings.image.width }}"
+          height="{{ block.settings.image.height }}"
+        >
+      {% else %}
+        <div class="ai-product-showcase-image-placeholder-{{ ai_gen_id }}">
+          {{ 'image' | placeholder_svg_tag }}
+          <div class="ai-product-showcase-empty-state-{{ ai_gen_id }}">
+            Next, add an image
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="ai-product-showcase-content-{{ ai_gen_id }}">
+    <div class="ai-product-showcase-products-{{ ai_gen_id }}">
+      {% liquid
+        assign product_1 = block.settings.product_1
+        assign product_2 = block.settings.product_2
+        assign product_3 = block.settings.product_3
+        assign product_4 = block.settings.product_4
+        assign products = product_1 | concat: product_2 | concat: product_3 | concat: product_4
+        assign has_products = false
+      %}
+
+      {% if product_1 != blank %}
+        {% assign has_products = true %}
+        <a href="{{ product_1.url }}" class="ai-product-card-{{ ai_gen_id }}">
+          <div class="ai-product-card-image-{{ ai_gen_id }}">
+            {% if product_1.featured_image %}
+              <img
+                src="{{ product_1.featured_image | image_url: width: 400 }}"
+                alt="{{ product_1.featured_image.alt | escape }}"
+                loading="lazy"
+                width="400"
+                height="400"
+              >
+            {% else %}
+              <div class="ai-product-card-image-placeholder-{{ ai_gen_id }}">
+                {{ 'product-1' | placeholder_svg_tag }}
+              </div>
+            {% endif %}
+          </div>
+          <div class="ai-product-card-info-{{ ai_gen_id }}">
+            <h3 class="ai-product-card-title-{{ ai_gen_id }}">{{ product_1.title }}</h3>
+            <div class="ai-product-card-price-{{ ai_gen_id }}">
+              {% if product_1.compare_at_price > product_1.price %}
+                <span class="ai-product-card-compare-price-{{ ai_gen_id }}">{{ product_1.compare_at_price | money }}</span>
+                <span class="ai-product-card-sale-price-{{ ai_gen_id }}">{{ product_1.price | money }}</span>
+              {% else %}
+                {{ product_1.price | money }}
+              {% endif %}
+            </div>
+          </div>
+        </a>
+      {% endif %}
+
+      {% if product_2 != blank %}
+        {% assign has_products = true %}
+        <a href="{{ product_2.url }}" class="ai-product-card-{{ ai_gen_id }}">
+          <div class="ai-product-card-image-{{ ai_gen_id }}">
+            {% if product_2.featured_image %}
+              <img
+                src="{{ product_2.featured_image | image_url: width: 400 }}"
+                alt="{{ product_2.featured_image.alt | escape }}"
+                loading="lazy"
+                width="400"
+                height="400"
+              >
+            {% else %}
+              <div class="ai-product-card-image-placeholder-{{ ai_gen_id }}">
+                {{ 'product-1' | placeholder_svg_tag }}
+              </div>
+            {% endif %}
+          </div>
+          <div class="ai-product-card-info-{{ ai_gen_id }}">
+            <h3 class="ai-product-card-title-{{ ai_gen_id }}">{{ product_2.title }}</h3>
+            <div class="ai-product-card-price-{{ ai_gen_id }}">
+              {% if product_2.compare_at_price > product_2.price %}
+                <span class="ai-product-card-compare-price-{{ ai_gen_id }}">{{ product_2.compare_at_price | money }}</span>
+                <span class="ai-product-card-sale-price-{{ ai_gen_id }}">{{ product_2.price | money }}</span>
+              {% else %}
+                {{ product_2.price | money }}
+              {% endif %}
+            </div>
+          </div>
+        </a>
+      {% endif %}
+
+      {% if product_3 != blank %}
+        {% assign has_products = true %}
+        <a href="{{ product_3.url }}" class="ai-product-card-{{ ai_gen_id }}">
+          <div class="ai-product-card-image-{{ ai_gen_id }}">
+            {% if product_3.featured_image %}
+              <img
+                src="{{ product_3.featured_image | image_url: width: 400 }}"
+                alt="{{ product_3.featured_image.alt | escape }}"
+                loading="lazy"
+                width="400"
+                height="400"
+              >
+            {% else %}
+              <div class="ai-product-card-image-placeholder-{{ ai_gen_id }}">
+                {{ 'product-1' | placeholder_svg_tag }}
+              </div>
+            {% endif %}
+          </div>
+          <div class="ai-product-card-info-{{ ai_gen_id }}">
+            <h3 class="ai-product-card-title-{{ ai_gen_id }}">{{ product_3.title }}</h3>
+            <div class="ai-product-card-price-{{ ai_gen_id }}">
+              {% if product_3.compare_at_price > product_3.price %}
+                <span class="ai-product-card-compare-price-{{ ai_gen_id }}">{{ product_3.compare_at_price | money }}</span>
+                <span class="ai-product-card-sale-price-{{ ai_gen_id }}">{{ product_3.price | money }}</span>
+              {% else %}
+                {{ product_3.price | money }}
+              {% endif %}
+            </div>
+          </div>
+        </a>
+      {% endif %}
+
+      {% if product_4 != blank %}
+        {% assign has_products = true %}
+        <a href="{{ product_4.url }}" class="ai-product-card-{{ ai_gen_id }}">
+          <div class="ai-product-card-image-{{ ai_gen_id }}">
+            {% if product_4.featured_image %}
+              <img
+                src="{{ product_4.featured_image | image_url: width: 400 }}"
+                alt="{{ product_4.featured_image.alt | escape }}"
+                loading="lazy"
+                width="400"
+                height="400"
+              >
+            {% else %}
+              <div class="ai-product-card-image-placeholder-{{ ai_gen_id }}">
+                {{ 'product-1' | placeholder_svg_tag }}
+              </div>
+            {% endif %}
+          </div>
+          <div class="ai-product-card-info-{{ ai_gen_id }}">
+            <h3 class="ai-product-card-title-{{ ai_gen_id }}">{{ product_4.title }}</h3>
+            <div class="ai-product-card-price-{{ ai_gen_id }}">
+              {% if product_4.compare_at_price > product_4.price %}
+                <span class="ai-product-card-compare-price-{{ ai_gen_id }}">{{ product_4.compare_at_price | money }}</span>
+                <span class="ai-product-card-sale-price-{{ ai_gen_id }}">{{ product_4.price | money }}</span>
+              {% else %}
+                {{ product_4.price | money }}
+              {% endif %}
+            </div>
+          </div>
+        </a>
+      {% endif %}
+
+      {% unless has_products %}
+        <div class="ai-product-showcase-empty-products-{{ ai_gen_id }}">
+          Next, select products to display
+        </div>
+      {% endunless %}
+    </div>
+
+    {% if block.settings.collection != blank %}
+      <div class="ai-product-showcase-button-wrapper-{{ ai_gen_id }}">
+        <a href="{{ block.settings.collection.url }}" class="ai-product-showcase-button-{{ ai_gen_id }}">
+          {{ block.settings.button_text }}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product showcase",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Products"
+    },
+    {
+      "type": "product",
+      "id": "product_1",
+      "label": "Product 1"
+    },
+    {
+      "type": "product",
+      "id": "product_2",
+      "label": "Product 2"
+    },
+    {
+      "type": "product",
+      "id": "product_3",
+      "label": "Product 3"
+    },
+    {
+      "type": "product",
+      "id": "product_4",
+      "label": "Product 4"
+    },
+    {
+      "type": "header",
+      "content": "Collection button"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "View collection"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button background",
+      "default": "#800000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg_color",
+      "label": "Button hover background",
+      "default": "#600000"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product showcase"
+    }
+  ]
+}
+{% endschema %}

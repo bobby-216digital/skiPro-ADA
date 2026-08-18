@@ -1,0 +1,114 @@
+<!doctype html>
+<html class="no-touch supports-no-cookies" lang="{{ request.locale.iso_code }}">
+  <head>
+    {%- render 'head' -%}
+
+    {{ content_for_header }}
+
+{% comment %} PIXELS {% endcomment %}
+
+{% comment %} Fraud Tracker from PRIMO Advertising  Services. Contact David Diaz or Garrett Nann for issues with the following code snippet. __Justin M.{% endcomment %}
+    {% comment %} Fraud Blocker {% endcomment %}
+    <script type="text/javascript">
+      (function () {
+        var s = document.createElement('script'),
+          h = document.head;
+        s.async = 1;
+        s.src = 'https://monitor.fraudblocker.com/fbt.js?sid=16Lj3iCjlWLW_9I7ZLrK9';
+        h.appendChild(s);
+      })();
+    </script>
+    <noscript>
+      <a href="https://fraudblocker.com" rel="nofollow">
+        <img src="https://monitor.fraudblocker.com/fbt.gif?sid=16Lj3iCjlWLW_9I7ZLrK9" alt="Fraud Blocker">
+      </a>
+    </noscript>
+{% comment %} End Fraud Blocker {% endcomment %}
+
+
+{% comment %} SUPERPIXEL from PRIMO Advertising Services. Contact David Diaz or Garrett Nann for issues with the following code snippet. __Justin M. {% endcomment %}
+
+{% comment %} Smart Pixel Code {% endcomment %}
+
+<script type="text/javascript">
+
+const pixelId = 'ace47079-8481-4c27-8ccd-f2bccb780203';
+
+</script>
+
+<script src="https://cdn.idpixel.app/v1/idp-analytics-6a2969ca83e9dbc113e8318b.min.js" defer></script>
+
+{% comment %} End Smart Pixel Code {% endcomment %}
+
+
+{% comment %} Google Search Console Verification {% endcomment %}
+    <meta name="google-site-verification" content="7_O-4P5RbqmievPaaskZOwmGs63emvy4k1bTzIj3J5Q" />
+{% comment %} End Google Search Console Verification {% endcomment %}
+
+{% comment %} AMAZON GTM CONTAINER {% endcomment %}
+
+<script>
+        !function(w,d,s,t,a){if(w.amzn)return;w.amzn=a=function(){w.amzn.q.push([arguments,(new Date).getTime()])};a.q=[];a.version="0.0";s=d.createElement("script");s.src="https://c.amazon-adsystem.com/aat/amzn.js";s.id="amzn-pixel";s.async=true;t=d.getElementsByTagName("script")[0];t.parentNode.insertBefore(s,t)}(window,document);
+        amzn("setRegion", "NA");
+        amzn("addTag", "cd84b39e-e0ed-43ca-87d9-50af275ee048");
+        amzn("trackEvent", "PageView_IHM178_SkiPro");
+  </script>
+
+{% comment %} END AMAZON GTM CONTAINER {% endcomment %}
+
+{% comment %} END PIXELS {% endcomment %}
+  </head>
+
+  <body
+    id="{{ page_title | handle }}"
+    class="template-{{ template.name | handle }} grid-{{ settings.grid_style }}{% if customer %} customer-logged-in{% endif %}{% if settings.animations_enable %} aos-initialized{% endif %}{% if settings.product_grid_outline %} has-line-design{% endif %}"
+    data-animations="{{ settings.animations_enable }}"
+  >
+    {%- render 'loading' -%}
+
+    <a class="in-page-link visually-hidden skip-link" data-skip-content href="#MainContent">
+      {{- 'general.accessibility.skip_to_content' | t -}}
+    </a>
+
+    <div class="container" data-site-container>
+      <div class="header-sections">
+        {% sections 'group-header' %}
+      </div>
+
+      {% sections 'group-overlay' %}
+
+      <!-- CONTENT -->
+      <main role="main" id="MainContent" class="main-content">
+        {{ content_for_layout }}
+      </main>
+    </div>
+
+    {% sections 'group-pre-footer' %}
+
+    <footer class="footer-sections">
+      {% sections 'group-footer' %}
+    </footer>
+
+    {% render 'zoom-pswp' %}
+
+    {%- if template.name != 'product' and settings.show_scroll_top_button -%}
+      <button
+        type="button"
+        class="btn btn--scroll-top btn--black btn--solid"
+        aria-label="{{ 'general.accessibility.scroll_to_top' | t }}"
+        data-scroll-top-button
+      >
+        {%- render 'icon-nav-arrow-up' -%}
+      </button>
+    {%- endif -%}
+
+    {%- comment -%}
+      In order to use your custom javascript file at assets/custom.js
+      just cut this next line and paste it outside this comment:
+      <script src="{{ 'custom.js' | asset_url }}" defer="defer"></script>
+    {%- endcomment -%}
+    <!-- Paste marketing code or third party scripts below this comment line ============== -->
+
+    <!-- And above this comment line ================================================== -->
+  </body>
+</html>
