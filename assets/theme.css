@@ -24742,3 +24742,18 @@ body.has-header-sticky .timeline {
     height: auto !important;
 }
 /* =====End Addition. This section allows for default product pages to have a sticky gallery when product pages are viewed and scrolled===== */
+
+.skip-link {
+  position: absolute;
+  left: -10000px;
+  top: 0px;
+  padding: 12px;
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+  border-radius: 5px;
+  z-index: 999999999;
+}
+.skip-link:focus-visible {
+  left: 0px;
+}

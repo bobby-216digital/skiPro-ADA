@@ -66,8 +66,12 @@ const pixelId = 'ace47079-8481-4c27-8ccd-f2bccb780203';
   >
     {%- render 'loading' -%}
 
-    <a class="in-page-link visually-hidden skip-link" data-skip-content href="#MainContent">
+    <a class="skip-link" data-skip-content href="#MainContent">
       {{- 'general.accessibility.skip_to_content' | t -}}
+    </a>
+
+    <a class="skip-link" data-skip-content href="/pages/accessibility-statement">
+      Go to Accessibility Statement
     </a>
 
     <div class="container" data-site-container>
@@ -110,5 +114,25 @@ const pixelId = 'ace47079-8481-4c27-8ccd-f2bccb780203';
     <!-- Paste marketing code or third party scripts below this comment line ============== -->
 
     <!-- And above this comment line ================================================== -->
+
+    <script>
+    var $$ = (selector, attribute, value) => {
+        const interval = setInterval(() => {
+            const elems = document.querySelectorAll(selector)
+            elems.forEach((elem) => {
+                if (value) {
+                    if(!elem.hasAttribute(attribute)) {
+                        elem.setAttribute(attribute, value)
+                        clearInterval(interval)
+                    }
+                } else {
+                    elem.removeAttribute(attribute)
+                    clearInterval(interval)
+                }
+            }) 
+        }, 100)
+    }
+    $$("button.juniper-new-arrow", "aria-label", "Juniper Button")
+    </script>
   </body>
 </html>

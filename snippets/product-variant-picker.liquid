@@ -248,8 +248,9 @@
             >
               {%- if picker_type == 'swatch' -%}
                 <fieldset class="product-form__input">
+                  <legend class="visually-hidden">Select Swatch Options for {{ product.title | escape }}</legend>
                   <div class="radio__fieldset radio__fieldset--swatches">
-                    <legend class="radio__legend{% if is_size_option and size_chart_link and show_size_link_separated == false %} radio__legend--size{% endif %}">
+                    <div class="radio__legend{% if is_size_option and size_chart_link and show_size_link_separated == false %} radio__legend--size{% endif %}">
                       <span
                         class="radio__legend__label{% if size_style == 'text' %} radio__legend__label--text{% endif %}"
                         id="{{ uniq_id }}-select-{{ option.name | handle }}-label"
@@ -280,7 +281,7 @@
                       {%- if form_style == 'classic' -%}
                         </div>
                       {%- endif -%}
-                    </legend>
+                    </div>
 
                     <div class="radio__buttons">
                       {% render 'product-variant-options',
@@ -315,8 +316,9 @@
                 -%}
 
                 <fieldset class="product-form__input">
+                  <legend class="visually-hidden">Select Radio Fieldset Options for {{ product.title | escape }}</legend>
                   <div class="{{ radio_fieldset_class }}">
-                    <legend class="radio__legend{% if is_size_option and size_chart_content and show_size_link_separated == false %} radio__legend--size{% endif %}">
+                    <div class="radio__legend{% if is_size_option and size_chart_content and show_size_link_separated == false %} radio__legend--size{% endif %}">
                       <span
                         class="radio__legend__label{% if size_style == 'text' %} radio__legend__label--text{% endif %}"
                         id="{{ uniq_id }}-select-{{ option.name | handle }}-label"
@@ -357,7 +359,7 @@
                       {%- if form_style == 'classic' -%}
                         </div>
                       {%- endif -%}
-                    </legend>
+                    </div>
 
                     {% render 'product-variant-options',
                       product: product,

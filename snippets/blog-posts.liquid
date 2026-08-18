@@ -113,8 +113,8 @@
 
             {%- if show_button -%}
               <div class="article__link">
-                <a href="#" class="btn btn--text" aria-label="{{ 'blogs.article.read_more' | t }}">
-                  <span>{{ 'blogs.article.read_more' | t }}</span>
+                <a href="#" class="btn btn--text">
+                  <span>{{ 'blogs.article.read_more' | t }} <span class="visually-hidden"> About {{ article.title | escape }}</span></span>
                 </a>
               </div>
             {%- endif -%}
@@ -217,8 +217,8 @@
 
             {%- if show_button -%}
               <div class="article__link">
-                <a href="{{ article.url }}" class="btn btn--text" aria-label="{{ 'blogs.article.read_more' | t }}">
-                  <span>{{ 'blogs.article.read_more' | t }}</span>
+                <a href="{{ article.url }}" class="btn btn--text">
+                  <span>{{ 'blogs.article.read_more' | t }} <span class="visually-hidden"> About {{ article.title | escape }}</span></span>
                 </a>
               </div>
             {%- endif -%}
